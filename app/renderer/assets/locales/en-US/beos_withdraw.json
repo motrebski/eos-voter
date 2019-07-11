@@ -9,6 +9,7 @@
   "withdraw_label_from": "Origin Account",
   "withdraw_label_quantity": "Quantity",
   "withdraw_label_to": "{{type}} account",
+  "withdraw_label_memo": "Memo (optional)",
   "withdraw_label_token_and_quantity": "Token Selection + Quantity",
   "withdraw_modal_title": "Withdraw/crosschain transfer tokens",
   "withdraw_send_button_cta": "Withdraw tokens",

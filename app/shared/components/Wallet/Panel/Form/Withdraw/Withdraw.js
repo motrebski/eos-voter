@@ -13,6 +13,7 @@ import { debounce, findIndex, includes } from 'lodash';
 
 import GlobalFormFieldAccount from '../../../../Global/Form/Field/Account';
 import FormFieldMultiToken from '../../../../Global/Form/Field/MultiToken';
+import GlobalFormFieldMemo from '../../../../Global/Form/Field/Memo';
 import FormMessageError from '../../../../Global/Form/Message/Error';
 import EOSContract from '../../../../../utils/EOS/Contract';
 import WalletPanelFormWithdrawConfirming from './Confirming';
@@ -27,6 +28,7 @@ class WalletPanelFormWithdraw extends Component<Props> {
       formError: false,
       from: props.settings.account,
       quantity: ' BTS',
+      memo: '',
       to: '',
       waiting: false,
       waitingStarted: 0,
@@ -130,10 +132,10 @@ class WalletPanelFormWithdraw extends Component<Props> {
   }
 
   onConfirm = () => {
-    const { asset, assetAccountObjects, from, to, quantity, storeName } = this.state;
+    const { asset, assetAccountObjects, from, memo, to, quantity, storeName } = this.state;
     this.setState({ confirming: false }, () => {
       if (assetAccountObjects[asset].walletName === 'BEOS') {
-        const newMemo = `${assetAccountObjects[asset].memoCoinType}:${to}::`;
+        const newMemo = `${assetAccountObjects[asset].memoCoinType}:${to}:${memo}:`;
         this.props.actions.transfer(from, 'beos.gateway', quantity, newMemo, asset);
       } else {
         this.props.actions.beoswithdraw(from, to, quantity, storeName);
@@ -328,6 +330,7 @@ class WalletPanelFormWithdraw extends Component<Props> {
       confirming,
       from,
       isValidAccount,
+      memo,
       to,
       quantity,
       formError,
@@ -353,8 +356,10 @@ class WalletPanelFormWithdraw extends Component<Props> {
           <WalletPanelFormWithdrawConfirming
             asset={asset}
             balances={balances}
+            memo={memo}
             to={to}
             withdrawAssetType={assetAccountObjects[asset].accountName}
+            walletName={assetAccountObjects[asset].walletName}
             from={from}
             onBack={this.onBack}
             onConfirm={this.onConfirm}
@@ -399,6 +404,16 @@ class WalletPanelFormWithdraw extends Component<Props> {
                 })}
               </p>
             )}
+            {assetAccountObjects[asset].walletName === "BEOS" ? (
+              <GlobalFormFieldMemo
+                icon="x"
+                label={t('withdraw_label_memo')}
+                loading={false}
+                name="memo"
+                onChange={this.onChange}
+                value={memo}
+              />
+            ) : null}
             <FormMessageError
               error={formError}
               chainSymbol={assetAccountObjects[asset].accountName}

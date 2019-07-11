@@ -22,6 +22,7 @@ class WalletPanelFormWithdrawConfirming extends Component<Props> {
   render() {
     const {
       balances,
+      memo,
       to,
       from,
       onBack,
@@ -30,6 +31,7 @@ class WalletPanelFormWithdrawConfirming extends Component<Props> {
       t,
       waiting,
       waitingStarted,
+      walletName,
       withdrawAssetType
     } = this.props;
 
@@ -60,6 +62,12 @@ class WalletPanelFormWithdrawConfirming extends Component<Props> {
               <Table.Cell>{t("withdraw_label_to", { type: withdrawAssetType })}</Table.Cell>
               <Table.Cell>{to}</Table.Cell>
             </Table.Row>
+            {walletName === "BEOS" ? (
+              <Table.Row>
+                <Table.Cell>{t("withdraw_label_memo")}</Table.Cell>
+                <Table.Cell>{memo}</Table.Cell>
+              </Table.Row>
+            ) : null}
             <Table.Row>
               <Table.Cell>{t("withdraw_label_quantity")}</Table.Cell>
               <Table.Cell>
